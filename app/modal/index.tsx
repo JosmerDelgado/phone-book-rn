@@ -21,7 +21,7 @@ export default function ModalScreen() {
     const response = await createNewContact(form)
     if(response) {
       dispatchContacts?.((oldContacts)=>{
-        const newContactlist = [...oldContacts, form as ItemContact ]
+        const newContactlist = [...oldContacts, response as ItemContact ]
         const stringifyNewContactlist = JSON.stringify(newContactlist)
         setItem(stringifyNewContactlist)
         return (newContactlist)

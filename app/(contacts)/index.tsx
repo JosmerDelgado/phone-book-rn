@@ -1,6 +1,6 @@
 import { Text, View } from "@/components/Themed";
 import { useEffect } from "react";
-import { FlatList } from "react-native";
+import { FlatList, ScrollView } from "react-native";
 import { useContacts } from "@/components/useContacts";
 import { useContactsDispatchStore, useContactsStore } from "@/components/ContactsContext";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
@@ -34,32 +34,33 @@ export default function ContactsView() {
         onFetchContacts()
     }, [])
 
-    return <View>
-        {loading && <Text>Loading ...</Text>}
-        {!loading && <Text>
-            Contact List:
-        </Text>}
-        {!loading && contactsList.length > 0 
-            && <FlatList 
-                data={
-                contactsList.sort((a,b)=> {
-                    if(a.name + a.lastName < b.name + b.lastName){
-                        return -1
+    return <ScrollView>
+        <View>
+            {loading && <Text>Loading ...</Text>}
+            {!loading && <Text>
+                Contact List:
+            </Text>}
+            {!loading && contactsList.length > 0
+                && <FlatList
+                    data={
+                        contactsList.sort((a, b) => {
+                            if (a.name + a.lastName < b.name + b.lastName) {
+                                return -1
+                            }
+                            if (a.name + a.lastName > b.name + b.lastName) {
+                                return 1
+                            }
+                            return 0
+                        })
                     }
-                    if(a.name + a.lastName > b.name + b.lastName){
-                        return 1
-                    }
-                    return 0
-                    })
-                } 
-                renderItem={(contact) => 
-                    <ContactItem 
-                        name={contact.item.name}
-                        lastName={contact.item.lastName || ""}
-                        phoneNumber={contact.item.phoneNumber || ""}
-                        id={contact.item.id} 
-                    />} 
+                    renderItem={(contact) =>
+                        <ContactItem
+                            name={contact.item.name}
+                            lastName={contact.item.lastName || ""}
+                            phoneNumber={contact.item.phoneNumber || ""}
+                            id={contact.item.id}
+                        />}
                 />}
-
-    </View>
+        </View>
+    </ScrollView>
 }
