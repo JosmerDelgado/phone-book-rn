@@ -1,11 +1,11 @@
 import { Button, StyleSheet } from "react-native"
 import { Text, View } from "./Themed"
-import { useNavigation, useRouter } from "expo-router"
+import { useRouter } from "expo-router"
 
 export const ContactItem = ({ name, lastName, phoneNumber, id }: { name: string, lastName?: string, phoneNumber?: string, id: string }) => {
     const navigation = useRouter()
 
-    return <View style={styles.contactItem}>
+    return <View style={styles.contactItem} testID="ConcactItem">
         <View>
             <View style={styles.nameRow}>
                 <Text style={styles.nameItem}>{name}</Text>
@@ -13,9 +13,11 @@ export const ContactItem = ({ name, lastName, phoneNumber, id }: { name: string,
             </View>
             <Text style={styles.phoneRow}>{phoneNumber}</Text>
         </View>
-        <Button title="Edit" onPress={()=>{
-            navigation.navigate(`/modal/${id}`)
-        }} />
+        <View style={styles.buttonRow}>
+            <Button testID={`Edit${id}`} title="Edit" onPress={()=>{
+                navigation.navigate(`/modal/${id}`)
+            }} />
+        </View>
     </View>
 }
 
@@ -36,5 +38,9 @@ const styles = StyleSheet.create({
     },
     nameItem: {
         marginRight: 8
-    }
+    },
+    buttonRow: {
+        flexDirection: "row",
+        gap:8
+    },
 })

@@ -2,7 +2,7 @@
 import { generateClient } from 'aws-amplify/api';
 import { listContacts } from "@/src/graphql/queries";
 import { useState } from 'react';
-import { createContact, updateContact } from '@/src/graphql/mutations';
+import { createContact, deleteContact, updateContact } from '@/src/graphql/mutations';
 
 const client = generateClient();
 
@@ -27,6 +27,7 @@ export const useContacts = () => {
             setError(false)
             const contactListResponse = await client.graphql({
                 query: listContacts,
+                variables: {filter: {_deleted: { ne: true}}}
             });
             setLoading(false)
             return  contactListResponse.data.listContacts.items;
@@ -37,7 +38,7 @@ export const useContacts = () => {
         }
     }
 
-    async function createNewContact(variables: { name: string, lastName:string, phoneNumber: string}){
+    async function createNewContact(variables: ItemContact | { name: string, lastName:string, phoneNumber: string}){
         try {
             setLoading(true)
             setError(false)
@@ -75,11 +76,35 @@ export const useContacts = () => {
 
             return newContactResponse.data.updateContact
         } catch(err){
-            console.log('on creation of new contact');
+            console.log('on Edit of new contact');
             setError(true)
             setLoading(false)
         }
 
     }
-    return { loading, error, fetchContactList, createNewContact, editContact }
+    async function removeContact(variables: ItemContact){
+        try {
+            setLoading(true)
+            setError(false)
+            const newContactResponse = await client.graphql({
+                query: deleteContact,
+                variables: { 
+                    input: { 
+                        id: variables.id,
+                        _version: variables._version
+                    } 
+                }
+            })
+            setLoading(false)
+
+            return newContactResponse.data.deleteContact
+        } catch(err){
+            console.log('on delete of new contact');
+            setError(true)
+            setLoading(false)
+        }
+
+    }
+
+    return { loading, error, fetchContactList, createNewContact, editContact, removeContact }
 }

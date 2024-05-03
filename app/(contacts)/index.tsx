@@ -34,33 +34,31 @@ export default function ContactsView() {
         onFetchContacts()
     }, [])
 
-    return <ScrollView>
-        <View>
-            {loading && <Text>Loading ...</Text>}
-            {!loading && <Text>
-                Contact List:
-            </Text>}
-            {!loading && contactsList.length > 0
-                && <FlatList
-                    data={
-                        contactsList.sort((a, b) => {
-                            if (a.name + a.lastName < b.name + b.lastName) {
-                                return -1
-                            }
-                            if (a.name + a.lastName > b.name + b.lastName) {
-                                return 1
-                            }
-                            return 0
-                        })
-                    }
-                    renderItem={(contact) =>
-                        <ContactItem
-                            name={contact.item.name}
-                            lastName={contact.item.lastName || ""}
-                            phoneNumber={contact.item.phoneNumber || ""}
-                            id={contact.item.id}
-                        />}
-                />}
-        </View>
-    </ScrollView>
+    return <View style={{ flex: 1 }} >
+        {loading && <Text>Loading ...</Text>}
+        {!loading && <Text>
+            Contact List:
+        </Text>}
+        {!loading && contactsList.length > 0
+            && <FlatList
+                data={
+                    contactsList.sort((a, b) => {
+                        if (a.name + a.lastName < b.name + b.lastName) {
+                            return -1
+                        }
+                        if (a.name + a.lastName > b.name + b.lastName) {
+                            return 1
+                        }
+                        return 0
+                    })
+                }
+                renderItem={(contact) =>
+                    <ContactItem
+                        name={contact.item.name}
+                        lastName={contact.item.lastName || ""}
+                        phoneNumber={contact.item.phoneNumber || ""}
+                        id={contact.item.id}
+                    />}
+            />}
+    </View>
 }

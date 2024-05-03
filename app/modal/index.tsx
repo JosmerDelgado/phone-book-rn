@@ -7,9 +7,10 @@ import { useContactsDispatchStore } from '@/components/ContactsContext';
 import { useNavigation } from 'expo-router';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { CONTACT_STORAGE_KEY } from '@/constants/Storage';
+import { ContactForm } from '@/components/ContactForm';
 
 export default function ModalScreen() {
-  const [form, setForm] = useState({name:"", lastName: "", phoneNumber: ""})
+  const [form, setForm] = useState<ItemContact | {name:string, lastName: string, phoneNumber: string}>({name:"", lastName: "", phoneNumber: ""} )
   const { loading, error, createNewContact } = useContacts()
   const dispatchContacts = useContactsDispatchStore()
   const { setItem } = useAsyncStorage(CONTACT_STORAGE_KEY)    
@@ -32,16 +33,7 @@ export default function ModalScreen() {
   }
   
   return (
-    <View style={styles.container}>
-        {loading && <Text>Loading...</Text>}
-        <Text style={styles.title}>
-          Add Contact
-        </Text>
-        <TextInput style={styles.input} value={form.name} onChangeText={(innertext) => { setForm((oldForm)=>({...oldForm, name: innertext})) }} placeholder='Name' />
-        <TextInput style={styles.input} value={form.lastName} onChangeText={(innertext) => { setForm((oldForm)=>({...oldForm, lastName: innertext})) }} placeholder='Last Name' />
-        <TextInput style={styles.input} value={form.phoneNumber} inputMode='tel' onChangeText={(innertext) => { setForm((oldForm)=>({...oldForm, phoneNumber: innertext})) }} placeholder='Phone Number' />      
-        <Button title="Create Contact" onPress={onClickCreateNewContact}/>
-    </View>
+    <ContactForm form={form} loading={loading} error={error} onChange={setForm} onConfirm={onClickCreateNewContact} buttonTitle='Create Contact'/>
   );
 }
 

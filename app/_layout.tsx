@@ -46,7 +46,7 @@ function RootLayoutNav() {
             </Link>
           ),}} />
         <Stack.Screen name="modal/index" options={{ presentation: 'modal', title: "New Contact" }} />
-        <Stack.Screen name="modal/[modal_id]/index" options={{ presentation: 'modal', title: "New Contact" }} />
+        <Stack.Screen name="modal/[contact_id]/index" options={{ presentation: 'modal', title: "New Contact" }} />
       </Stack>
     </ThemeProvider>
   );
