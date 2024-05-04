@@ -4,6 +4,9 @@ import { useFonts } from 'expo-font';
 import { Link, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import {
+  withAuthenticator
+} from '@aws-amplify/ui-react-native';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -12,6 +15,8 @@ import amplifyconfig from '@/src/amplifyconfiguration.json';
 import { Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
 import { ContactsProvider } from '@/components/ContactsContext';
+import { SignOutButton } from '@/components/auth/SignOutButton';
+
 Amplify.configure(amplifyconfig);
 
 export {
@@ -23,7 +28,6 @@ export const unstable_settings = {
 };
 
 SplashScreen.preventAutoHideAsync();
-
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
@@ -48,11 +52,12 @@ function RootLayoutNav() {
         <Stack.Screen name="modal/index" options={{ presentation: 'modal', title: "New Contact" }} />
         <Stack.Screen name="modal/[contact_id]/index" options={{ presentation: 'modal', title: "New Contact" }} />
       </Stack>
+      <SignOutButton />
     </ThemeProvider>
   );
 }
 
-export default function RootLayout() {
+export default withAuthenticator(function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
@@ -73,4 +78,4 @@ export default function RootLayout() {
   }
 
   return <ContactsProvider><RootLayoutNav /></ContactsProvider>;
-}
+})

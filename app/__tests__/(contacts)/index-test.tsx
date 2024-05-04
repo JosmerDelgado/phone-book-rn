@@ -1,6 +1,5 @@
 import ContactsView from "@/app/(contacts)"
 import { fireEvent, render, screen } from "@testing-library/react-native"
-import * as Router from "expo-router"
 
 jest.mock("aws-amplify/api", ()=>({generateClient:()=>{}}))
 jest.mock("@react-native-async-storage/async-storage", ()=>({useAsyncStorage:()=>({
@@ -35,6 +34,5 @@ describe("Contacts", ()=>{
         const editButton = screen.getByTestId("Edit00")
         
         fireEvent.press(editButton)
-        // TODO: add expect related with navigation      
     })
 })

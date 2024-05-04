@@ -4,6 +4,8 @@ import { contactsByUser, listContacts } from "@/src/graphql/queries";
 import { useState } from 'react';
 import { createContact, deleteContact, updateContact } from '@/src/graphql/mutations';
 import { ModelSortDirection } from '@/src/API';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { userSelector } from './auth/SignOutButton';
 
 const client = generateClient();
 
@@ -20,6 +22,8 @@ export type ItemContact = {
 }
 
 export const useContacts = () => {
+  const { user } = useAuthenticator(userSelector);
+
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     async function fetchContactList(nextToken?: string | null) {
@@ -29,7 +33,7 @@ export const useContacts = () => {
             const contactListResponse = await client.graphql({
                 query: contactsByUser,
                 variables: { 
-                    userId: "USER",
+                    userId: user.userId,
                     filter: {_deleted: {attributeExists: false}}, 
                     limit: 10, 
                     sortDirection: ModelSortDirection.ASC,
@@ -51,7 +55,7 @@ export const useContacts = () => {
             setError(false)
             const newContactResponse = await client.graphql({
                 query: createContact,
-                variables: { input: {...variables, userId: "USER"} }
+                variables: { input: {...variables, userId: user.userId} }
             })
             setLoading(false)
 
