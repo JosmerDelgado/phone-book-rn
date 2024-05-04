@@ -14,6 +14,7 @@ export const getContact = /* GraphQL */ `query GetContact($id: ID!) {
     name
     lastName
     phoneNumber
+    userId
     createdAt
     updatedAt
     _version
@@ -37,6 +38,7 @@ export const listContacts = /* GraphQL */ `query ListContacts(
       name
       lastName
       phoneNumber
+      userId
       createdAt
       updatedAt
       _version
@@ -70,6 +72,7 @@ export const syncContacts = /* GraphQL */ `query SyncContacts(
       name
       lastName
       phoneNumber
+      userId
       createdAt
       updatedAt
       _version
@@ -85,4 +88,42 @@ export const syncContacts = /* GraphQL */ `query SyncContacts(
 ` as GeneratedQuery<
   APITypes.SyncContactsQueryVariables,
   APITypes.SyncContactsQuery
+>;
+export const contactsByUser = /* GraphQL */ `query ContactsByUser(
+  $userId: String!
+  $nameLastName: ModelContactContactsByUserCompositeKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelContactFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  contactsByUser(
+    userId: $userId
+    nameLastName: $nameLastName
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      lastName
+      phoneNumber
+      userId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ContactsByUserQueryVariables,
+  APITypes.ContactsByUserQuery
 >;

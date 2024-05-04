@@ -4,7 +4,13 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } }
 
 type Contact @model {
   id: ID!
+
   name: String!
   lastName: String
   phoneNumber: String
+  userId: String! @index(
+      name: "contactsByUser"
+      queryField: "contactsByUser"
+      sortKeyFields: ["name","lastName"]
+    )
 }

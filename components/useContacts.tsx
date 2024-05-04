@@ -1,8 +1,9 @@
 
 import { generateClient } from 'aws-amplify/api';
-import { listContacts } from "@/src/graphql/queries";
+import { contactsByUser, listContacts } from "@/src/graphql/queries";
 import { useState } from 'react';
 import { createContact, deleteContact, updateContact } from '@/src/graphql/mutations';
+import { ModelSortDirection } from '@/src/API';
 
 const client = generateClient();
 
@@ -21,16 +22,22 @@ export type ItemContact = {
 export const useContacts = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
-    async function fetchContactList() {
+    async function fetchContactList(nextToken?: string | null) {
         try {
             setLoading(true)
             setError(false)
             const contactListResponse = await client.graphql({
-                query: listContacts,
-                variables: {filter: {_deleted: { ne: true}}}
+                query: contactsByUser,
+                variables: { 
+                    userId: "USER",
+                    filter: {_deleted: {attributeExists: false}}, 
+                    limit: 10, 
+                    sortDirection: ModelSortDirection.ASC,
+                    nextToken,
+                },
             });
             setLoading(false)
-            return  contactListResponse.data.listContacts.items;
+            return  contactListResponse.data.contactsByUser;
         } catch (err) {
             console.log('error fetching contacts');
             setError(true)
@@ -44,7 +51,7 @@ export const useContacts = () => {
             setError(false)
             const newContactResponse = await client.graphql({
                 query: createContact,
-                variables: { input: variables }
+                variables: { input: {...variables, userId: "USER"} }
             })
             setLoading(false)
 

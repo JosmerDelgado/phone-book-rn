@@ -7,6 +7,7 @@ export type CreateContactInput = {
   name: string,
   lastName?: string | null,
   phoneNumber?: string | null,
+  userId: string,
   _version?: number | null,
 };
 
@@ -14,6 +15,7 @@ export type ModelContactConditionInput = {
   name?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
   phoneNumber?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
   and?: Array< ModelContactConditionInput | null > | null,
   or?: Array< ModelContactConditionInput | null > | null,
   not?: ModelContactConditionInput | null,
@@ -75,6 +77,7 @@ export type Contact = {
   name: string,
   lastName?: string | null,
   phoneNumber?: string | null,
+  userId: string,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -87,6 +90,7 @@ export type UpdateContactInput = {
   name?: string | null,
   lastName?: string | null,
   phoneNumber?: string | null,
+  userId?: string | null,
   _version?: number | null,
 };
 
@@ -100,6 +104,7 @@ export type ModelContactFilterInput = {
   name?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
   phoneNumber?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelContactFilterInput | null > | null,
@@ -131,11 +136,33 @@ export type ModelContactConnection = {
   startedAt?: number | null,
 };
 
+export type ModelContactContactsByUserCompositeKeyConditionInput = {
+  eq?: ModelContactContactsByUserCompositeKeyInput | null,
+  le?: ModelContactContactsByUserCompositeKeyInput | null,
+  lt?: ModelContactContactsByUserCompositeKeyInput | null,
+  ge?: ModelContactContactsByUserCompositeKeyInput | null,
+  gt?: ModelContactContactsByUserCompositeKeyInput | null,
+  between?: Array< ModelContactContactsByUserCompositeKeyInput | null > | null,
+  beginsWith?: ModelContactContactsByUserCompositeKeyInput | null,
+};
+
+export type ModelContactContactsByUserCompositeKeyInput = {
+  name?: string | null,
+  lastName?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelSubscriptionContactFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   lastName?: ModelSubscriptionStringInput | null,
   phoneNumber?: ModelSubscriptionStringInput | null,
+  userId?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionContactFilterInput | null > | null,
@@ -185,6 +212,7 @@ export type CreateContactMutation = {
     name: string,
     lastName?: string | null,
     phoneNumber?: string | null,
+    userId: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -205,6 +233,7 @@ export type UpdateContactMutation = {
     name: string,
     lastName?: string | null,
     phoneNumber?: string | null,
+    userId: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -225,6 +254,7 @@ export type DeleteContactMutation = {
     name: string,
     lastName?: string | null,
     phoneNumber?: string | null,
+    userId: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -244,6 +274,7 @@ export type GetContactQuery = {
     name: string,
     lastName?: string | null,
     phoneNumber?: string | null,
+    userId: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -267,6 +298,7 @@ export type ListContactsQuery = {
       name: string,
       lastName?: string | null,
       phoneNumber?: string | null,
+      userId: string,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -294,6 +326,37 @@ export type SyncContactsQuery = {
       name: string,
       lastName?: string | null,
       phoneNumber?: string | null,
+      userId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type ContactsByUserQueryVariables = {
+  userId: string,
+  nameLastName?: ModelContactContactsByUserCompositeKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelContactFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ContactsByUserQuery = {
+  contactsByUser?:  {
+    __typename: "ModelContactConnection",
+    items:  Array< {
+      __typename: "Contact",
+      id: string,
+      name: string,
+      lastName?: string | null,
+      phoneNumber?: string | null,
+      userId: string,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -316,6 +379,7 @@ export type OnCreateContactSubscription = {
     name: string,
     lastName?: string | null,
     phoneNumber?: string | null,
+    userId: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -335,6 +399,7 @@ export type OnUpdateContactSubscription = {
     name: string,
     lastName?: string | null,
     phoneNumber?: string | null,
+    userId: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -354,6 +419,7 @@ export type OnDeleteContactSubscription = {
     name: string,
     lastName?: string | null,
     phoneNumber?: string | null,
+    userId: string,
     createdAt: string,
     updatedAt: string,
     _version: number,

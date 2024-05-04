@@ -1,6 +1,6 @@
 import { Text, View } from "@/components/Themed";
-import { useEffect } from "react";
-import { FlatList, ScrollView } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList } from "react-native";
 import { useContacts } from "@/components/useContacts";
 import { useContactsDispatchStore, useContactsStore } from "@/components/ContactsContext";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
@@ -12,6 +12,7 @@ export default function ContactsView() {
     const { loading, fetchContactList } = useContacts()
     const contactsList = useContactsStore()
     const dispatchContacts = useContactsDispatchStore()
+    const [latestKey, setLatestKey] = useState<string | null>()
     const { getItem, setItem } = useAsyncStorage(CONTACT_STORAGE_KEY)
 
 
@@ -21,7 +22,8 @@ export default function ContactsView() {
             if (responseContacts) {
                 const strigifyContacts = JSON.stringify(responseContacts)
                 await setItem(strigifyContacts)
-                dispatchContacts?.(responseContacts)
+                dispatchContacts?.(responseContacts.items)
+                setLatestKey(responseContacts.nextToken)
                 return;
             }
             const storedContacts = await getItem()
@@ -34,13 +36,35 @@ export default function ContactsView() {
         onFetchContacts()
     }, [])
 
+    const onFetchConsecuentContacts = async () => {
+        const responseContacts = await fetchContactList(latestKey)
+        if (responseContacts) {
+            dispatchContacts?.((oldContactList)=>{
+                const newContactList = [...oldContactList, ...responseContacts.items];
+                const strigifyContacts = JSON.stringify(newContactList)
+                setItem(strigifyContacts)
+                setLatestKey(responseContacts.nextToken)
+                return newContactList})
+            return;
+        }
+    }
+
     return <View style={{ flex: 1 }} >
-        {loading && <Text>Loading ...</Text>}
-        {!loading && <Text>
+        
+        <Text>
             Contact List:
-        </Text>}
-        {!loading && contactsList.length > 0
+        </Text>
+        {contactsList.length > 0
             && <FlatList
+                onScrollEndDrag={()=>{
+                    console.log("HERE")
+                }}
+                onEndReached={()=>{
+                    console.log("onEndReached")
+                    if(latestKey){
+                        onFetchConsecuentContacts()
+                    }
+                }}
                 data={
                     contactsList.sort((a, b) => {
                         if (a.name + a.lastName < b.name + b.lastName) {
@@ -60,5 +84,6 @@ export default function ContactsView() {
                         id={contact.item.id}
                     />}
             />}
+        {loading && <Text>Loading ...</Text>}
     </View>
 }

@@ -14,6 +14,7 @@ export const onCreateContact = /* GraphQL */ `subscription OnCreateContact($filt
     name
     lastName
     phoneNumber
+    userId
     createdAt
     updatedAt
     _version
@@ -32,6 +33,7 @@ export const onUpdateContact = /* GraphQL */ `subscription OnUpdateContact($filt
     name
     lastName
     phoneNumber
+    userId
     createdAt
     updatedAt
     _version
@@ -50,6 +52,7 @@ export const onDeleteContact = /* GraphQL */ `subscription OnDeleteContact($filt
     name
     lastName
     phoneNumber
+    userId
     createdAt
     updatedAt
     _version

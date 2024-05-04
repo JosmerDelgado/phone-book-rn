@@ -31,6 +31,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "userId": {
+                    "name": "userId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -54,6 +61,18 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "contactsByUser",
+                        "queryField": "contactsByUser",
+                        "fields": [
+                            "userId",
+                            "name",
+                            "lastName"
+                        ]
+                    }
                 }
             ]
         }
@@ -61,5 +80,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "e9b7735c8513785ab4a43a60685dce65"
+    "version": "94e398d3f12eb89eb0130fbfa5718560"
 };

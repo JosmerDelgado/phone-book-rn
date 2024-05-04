@@ -17,6 +17,7 @@ export const createContact = /* GraphQL */ `mutation CreateContact(
     name
     lastName
     phoneNumber
+    userId
     createdAt
     updatedAt
     _version
@@ -38,6 +39,7 @@ export const updateContact = /* GraphQL */ `mutation UpdateContact(
     name
     lastName
     phoneNumber
+    userId
     createdAt
     updatedAt
     _version
@@ -59,6 +61,7 @@ export const deleteContact = /* GraphQL */ `mutation DeleteContact(
     name
     lastName
     phoneNumber
+    userId
     createdAt
     updatedAt
     _version

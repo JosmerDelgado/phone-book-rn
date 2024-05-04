@@ -1,6 +1,3 @@
-import { Button, StyleSheet, TextInput } from 'react-native';
-
-import { Text, View } from '@/components/Themed';
 import { useEffect, useState } from 'react';
 import { ItemContact, useContacts } from '@/components/useContacts';
 import { useContactsDispatchStore, useContactsStore } from '@/components/ContactsContext';

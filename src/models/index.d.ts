@@ -15,6 +15,7 @@ type EagerContact = {
   readonly name: string;
   readonly lastName?: string | null;
   readonly phoneNumber?: string | null;
+  readonly userId: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -28,6 +29,7 @@ type LazyContact = {
   readonly name: string;
   readonly lastName?: string | null;
   readonly phoneNumber?: string | null;
+  readonly userId: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
