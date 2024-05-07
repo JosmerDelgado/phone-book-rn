@@ -27,8 +27,6 @@ export const unstable_settings = {
   initialRouteName: '(tabs)',
 };
 
-SplashScreen.preventAutoHideAsync();
-
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
@@ -58,24 +56,5 @@ function RootLayoutNav() {
 }
 
 export default withAuthenticator(function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
-
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return <ContactsProvider><RootLayoutNav /></ContactsProvider>;
 })

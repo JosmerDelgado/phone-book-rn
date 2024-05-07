@@ -60,7 +60,6 @@ export default function ContactsView() {
                     console.log("HERE")
                 }}
                 onEndReached={()=>{
-                    console.log("onEndReached")
                     if(latestKey){
                         onFetchConsecuentContacts()
                     }
